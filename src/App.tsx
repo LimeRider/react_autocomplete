@@ -18,19 +18,9 @@ export const App: React.FC = () => {
 
         <Autocomplete
           people={peopleFromServer}
-          delay={1000}
+          delay={300}
           onSelected={setSelectedPerson}
         />
-
-        {selectedPerson === null && (
-          <div
-            className="notification is-danger is-light
-             mt-3 is-align-self-flex-start"
-            role="alert"
-            data-cy="no-suggestions-message"
-            style={{ display: 'none' }}
-          />
-        )}
       </main>
     </div>
   );
