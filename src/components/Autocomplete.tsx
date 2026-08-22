@@ -52,6 +52,7 @@ export const Autocomplete: React.FC<Props> = ({
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
 
+    setIsFocused(true);
     setQuery(newValue);
     onSelected(null);
     applyQuery(newValue);
