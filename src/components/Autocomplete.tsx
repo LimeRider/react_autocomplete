@@ -76,6 +76,7 @@ export const Autocomplete: React.FC<Props> = ({
           value={query}
           onChange={handleQueryChange}
           onFocus={() => setIsFocused(true)}
+          onClick={() => setIsFocused(true)}
           onBlur={() => {
             setTimeout(() => setIsFocused(false), 150);
           }}
