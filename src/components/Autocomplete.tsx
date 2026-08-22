@@ -22,7 +22,7 @@ export const Autocomplete: React.FC<Props> = ({
 
   const applyQuery = useMemo(
     () =>
-      debounce((newValue: string) => {
+      debounce<string>(newValue => {
         if (newValue === lastAppliedRef.current) {
           return;
         }
@@ -34,8 +34,18 @@ export const Autocomplete: React.FC<Props> = ({
   );
 
   const filteredPeople = useMemo(() => {
+    const normalizedQuery = appliedQuery.trim().toLowerCase();
+
+    if (appliedQuery.length === 0) {
+      return people;
+    }
+
+    if (normalizedQuery === '') {
+      return [];
+    }
+
     return people.filter(person =>
-      person.name.toLowerCase().includes(appliedQuery.toLowerCase().trim()),
+      person.name.toLowerCase().includes(normalizedQuery),
     );
   }, [people, appliedQuery]);
 
@@ -74,7 +84,7 @@ export const Autocomplete: React.FC<Props> = ({
 
       <div className="dropdown-menu" role="menu" data-cy="suggestions-list">
         <div className="dropdown-content">
-          {query.length > 0 && filteredPeople.length === 0 ? (
+          {appliedQuery.length > 0 && filteredPeople.length === 0 ? (
             <div
               className="dropdown-item"
               data-cy="no-suggestions-message"
@@ -88,7 +98,10 @@ export const Autocomplete: React.FC<Props> = ({
                 key={person.slug}
                 className="dropdown-item"
                 data-cy="suggestion-item"
-                onMouseDown={() => handleSelect(person)}
+                onMouseDown={event => {
+                  event.preventDefault();
+                  handleSelect(person);
+                }}
               >
                 <p className="has-text-link">{person.name}</p>
               </div>
